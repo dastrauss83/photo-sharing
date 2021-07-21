@@ -1,4 +1,4 @@
-import { useStyles } from "./Styling";
+import { useStyles } from "../Styling";
 import { Button, Grid, Typography } from "@material-ui/core";
 import { CameraEnhance } from "@material-ui/icons";
 
@@ -37,7 +37,11 @@ export const Footer: React.FC = () => {
           >
             Created by:
             <a
-              style={{ fontStyle: "italic" }}
+              style={{
+                fontStyle: "italic",
+                marginLeft: "3px",
+                textDecoration: "none",
+              }}
               href="https://github.com/dastrauss83"
             >
               David Strauss

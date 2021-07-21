@@ -12,8 +12,8 @@ import { theme, useStyles } from "./Styling";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { useState } from "react";
 import { AccountCircle } from "@material-ui/icons";
-import { Navbar } from "./Navbar";
-import { Footer } from "./Footer";
+import { Navbar } from "./Components/Navbar";
+import { Footer } from "./Components/Footer";
 
 firebase.initializeApp({
   apiKey: "AIzaSyDvzOrnfzT_p9ntckvHxSJrO0AM6W9TEGY",
@@ -23,6 +23,13 @@ firebase.initializeApp({
   messagingSenderId: "1046485585302",
   appId: "1:1046485585302:web:9cc71232a65e7fad7fe1b7",
 });
+
+export type group = {
+  name: string;
+  description: string;
+  users: string[];
+  photos: string[];
+};
 
 const App: React.FC = () => {
   const classes = useStyles();

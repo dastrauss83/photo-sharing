@@ -1,6 +1,6 @@
 import { AppBar, Grid, Toolbar, Button, Typography } from "@material-ui/core";
 import { CameraEnhance } from "@material-ui/icons";
-import { useStyles } from "./Styling";
+import { useStyles } from "../Styling";
 
 export const Navbar: React.FC = () => {
   const classes = useStyles();
