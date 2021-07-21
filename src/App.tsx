@@ -1,26 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+firebase.initializeApp({
+  apiKey: "AIzaSyDvzOrnfzT_p9ntckvHxSJrO0AM6W9TEGY",
+  authDomain: "photo-sharing-433e8.firebaseapp.com",
+  projectId: "photo-sharing-433e8",
+  storageBucket: "photo-sharing-433e8.appspot.com",
+  messagingSenderId: "1046485585302",
+  appId: "1:1046485585302:web:9cc71232a65e7fad7fe1b7",
+});
+
+const App: React.FC = () => {
+  return <div className="App"></div>;
+};
 
 export default App;
