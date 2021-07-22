@@ -12,6 +12,7 @@ import { AllGroups } from "./Components/Groups/AllGroups";
 import { LogIn } from "./Components/LogIn";
 import { Group } from "./Components/Groups/Group";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { MyFeed } from "./Components/MyFeed";
 
 firebase.initializeApp({
   apiKey: "AIzaSyDvzOrnfzT_p9ntckvHxSJrO0AM6W9TEGY",
@@ -53,24 +54,6 @@ const App: React.FC = () => {
     }
   }, [groups]);
 
-  // const handleGetAllGroups = async () => {
-  //   const tempGroups: group[] = [];
-  //   await firebase
-  //     .firestore()
-  //     .collection("groups")
-  //     .get()
-  //     .then((querySnapshot) => {
-  //       querySnapshot.forEach((doc) => {
-  //         tempGroups.push(doc.data() as group);
-  //       });
-  //     });
-  //   setAllGroups(tempGroups);
-  // };
-
-  // useEffect(() => {
-  //   handleGetAllGroups();
-  // }, []);
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -78,7 +61,7 @@ const App: React.FC = () => {
         <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
         <Switch>
           <Route path="/my-feed">
-            <div style={{ marginTop: "400px" }}>This is My Feed</div>
+            <MyFeed currentUser={currentUser} allGroups={allGroups} />
           </Route>
           <Route path="/all-groups">
             <AllGroups currentUser={currentUser} allGroups={allGroups} />

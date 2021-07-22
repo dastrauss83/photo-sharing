@@ -11,6 +11,7 @@ import {
   AddAPhoto,
   AddCircle,
   AddPhotoAlternate,
+  ExitToApp,
   Publish,
 } from "@material-ui/icons";
 import firebase from "firebase";
@@ -66,12 +67,42 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
         ],
       });
     setCurrentUploadPath(null);
+    setUploadState(false);
+  };
+
+  const handleJoin = async () => {
+    await firebase
+      .firestore()
+      .collection("groups")
+      .doc(`${group.id}`)
+      .update({
+        members: [
+          ...group.members,
+          { displayName: currentUser.displayName, uid: currentUser.uid },
+        ],
+      });
+  };
+
+  const handleLeave = async () => {
+    const memberIndex = group.members
+      .filter((user) => {
+        return user.uid;
+      })
+      .indexOf(currentUser.uid);
+    const tempMembers = [...group.members];
+    tempMembers.splice(memberIndex, 1);
+    await firebase.firestore().collection("groups").doc(`${group.id}`).update({
+      members: tempMembers,
+    });
   };
 
   return (
     <main className={classes.container}>
       <Typography variant="h2" align="center" color="textPrimary" gutterBottom>
         {group.name}
+      </Typography>
+      <Typography variant="h5" align="center" color="textSecondary" paragraph>
+        {group.description}
       </Typography>
       {group.members.filter((user) => {
         return user.uid === currentUser.uid;
@@ -84,7 +115,7 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
           <Typography>Upload Photo to Group</Typography>
         </Button>
       ) : (
-        <Button>
+        <Button onClick={handleJoin} className={classes.groupMainButton}>
           <AddCircle color="primary" style={{ marginRight: "5px" }} />
           <Typography>Join Group</Typography>
         </Button>
@@ -116,7 +147,7 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
               <input
                 type="file"
                 onChange={(e) => uploadFile(e)}
-                accept="image/jpg"
+                accept="image/*"
                 className="inputFile"
               />
               <div className="fakeFile">
@@ -149,6 +180,26 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
               ))
             : null}
         </Grid>
+        <div className={classes.members}>
+          {group.members.filter((user) => {
+            return user.uid === currentUser.uid;
+          }).length > 0 ? (
+            <Button onClick={handleLeave}>
+              <ExitToApp color="primary" style={{ marginRight: "5px" }} />
+              <Typography>Leave</Typography>
+            </Button>
+          ) : null}
+          <Typography>Group Members:</Typography>
+          <div className={classes.membersList}>
+            {group.members.map((user) => {
+              return (
+                <Typography key={user.uid} style={{ marginRight: "5px" }}>
+                  {user.displayName}
+                </Typography>
+              );
+            })}
+          </div>
+        </div>
       </Container>
     </main>
   );

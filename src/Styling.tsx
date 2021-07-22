@@ -86,4 +86,23 @@ export const useStyles = makeStyles((theme) => ({
   groupMainButton: {
     marginBottom: "20px",
   },
+  members: {
+    marginTop: "50px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  membersList: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  newGroupForm: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
 }));

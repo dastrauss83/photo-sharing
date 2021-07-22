@@ -1,5 +1,6 @@
 import { Button, Card, CardContent, Grid, Typography } from "@material-ui/core";
 import { AddCircle, ExitToApp, Visibility } from "@material-ui/icons";
+import firebase from "firebase";
 import { Link } from "react-router-dom";
 import { group } from "../../App";
 import { useStyles } from "../../Styling";
@@ -14,6 +15,33 @@ export const GroupsCard: React.FC<GroupsCardProps> = ({
   currentUser,
 }) => {
   const classes = useStyles();
+
+  const handleJoin = async () => {
+    await firebase
+      .firestore()
+      .collection("groups")
+      .doc(`${group.id}`)
+      .update({
+        members: [
+          ...group.members,
+          { displayName: currentUser.displayName, uid: currentUser.uid },
+        ],
+      });
+  };
+
+  const handleLeave = async () => {
+    const memberIndex = group.members
+      .filter((user) => {
+        return user.uid;
+      })
+      .indexOf(currentUser.uid);
+    const tempMembers = [...group.members];
+    tempMembers.splice(memberIndex, 1);
+    await firebase.firestore().collection("groups").doc(`${group.id}`).update({
+      members: tempMembers,
+    });
+  };
+
   return (
     <Grid item xs={12} sm={6} md={4}>
       <Card>
@@ -29,28 +57,19 @@ export const GroupsCard: React.FC<GroupsCardProps> = ({
             </Grid>
             <Grid item>
               <div className={classes.gridCardButtons}>
-                {
-                  //group.members.filter((user) => {
-                  // return user.uid === currentUser.uid;
-                  // }).length > 0
-                  true ? (
-                    <Button>
-                      <ExitToApp
-                        color="primary"
-                        style={{ marginRight: "5px" }}
-                      />
-                      <Typography>Leave</Typography>
-                    </Button>
-                  ) : (
-                    <Button>
-                      <AddCircle
-                        color="primary"
-                        style={{ marginRight: "5px" }}
-                      />
-                      <Typography>Join</Typography>
-                    </Button>
-                  )
-                }
+                {group.members.filter((user) => {
+                  return user.uid === currentUser.uid;
+                }).length > 0 ? (
+                  <Button onClick={handleLeave}>
+                    <ExitToApp color="primary" style={{ marginRight: "5px" }} />
+                    <Typography>Leave</Typography>
+                  </Button>
+                ) : (
+                  <Button onClick={handleJoin}>
+                    <AddCircle color="primary" style={{ marginRight: "5px" }} />
+                    <Typography>Join</Typography>
+                  </Button>
+                )}
                 <Button>
                   <Link to={`/groups/${group.name}`} className={classes.link}>
                     <Visibility

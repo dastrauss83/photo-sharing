@@ -100,7 +100,7 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
   };
 
   return (
-    <Grid item xs={12} sm={6} md={3}>
+    <Grid item xs={12} sm={6} md={4}>
       <Card className={classes.card}>
         <CardMedia
           className={`${classes.cardMedia} cardMedia`}
@@ -121,14 +121,16 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
             root: classes.popover,
           }}
         >
-          <Card className={classes.card}>
-            <CardContent>
-              <CardMedia
-                className={classes.cardMediaPopover}
-                image={photo.photoUrl}
-              />
-            </CardContent>
-          </Card>
+          <a href={photo.photoUrl} target="_blank" rel="noreferrer noopener">
+            <Card className={classes.card}>
+              <CardContent>
+                <CardMedia
+                  className={classes.cardMediaPopover}
+                  image={photo.photoUrl}
+                />
+              </CardContent>
+            </Card>
+          </a>
         </Popover>
         <CardContent className={classes.cardContent}>
           <Typography variant="subtitle1">{photo.user.displayName}</Typography>
