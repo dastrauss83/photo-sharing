@@ -29,7 +29,7 @@ export const AllGroups: React.FC<AllGroupsProps> = ({
           <Grid container spacing={4}>
             {allGroups.map((group) => (
               <GroupsCard
-                key={group.name}
+                key={group.id}
                 currentUser={currentUser}
                 group={group}
               />

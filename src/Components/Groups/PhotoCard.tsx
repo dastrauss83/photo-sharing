@@ -27,30 +27,60 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
   const classes = useStyles();
   const [viewState, setViewState] = useState<boolean>(false);
 
-  const firebasePhoto = firebase
+  const firebaseGroup = firebase
     .firestore()
     .collection("groups")
     .doc(`${group.id}`);
 
   const handleDelete = async () => {
     if (window.confirm("Are you sure you want to delete this post?")) {
-      await firebasePhoto.delete();
+      const index = group.photos
+        .map((photoItem: photo) => {
+          return photoItem.photoUrl;
+        })
+        .indexOf(photo.photoUrl);
+      const tempGroupPhotos = [...group.photos];
+      tempGroupPhotos.splice(index, 1);
+      await firebaseGroup.update({
+        photos: tempGroupPhotos,
+      });
     }
   };
 
   const handleLike = async () => {
-    if (photo.likedBy.includes(currentUser.uid)) {
-      const index = photo.likedBy.indexOf(currentUser.uid);
-      const tempLikedBy = [...photo.likedBy];
-      tempLikedBy.splice(index, 1);
-      await firebasePhoto.update({
-        likes: photo.likes - 1,
-        likedBy: tempLikedBy,
+    const photoIndex = group.photos
+      .map((photoItem: photo) => {
+        return photoItem.photoUrl;
+      })
+      .indexOf(photo.photoUrl);
+
+    if (
+      group.photos[photoIndex].likedBy.map((user) => {
+        return user.uid === currentUser.uid;
+      }).length > 0
+    ) {
+      const userIndex = group.photos[photoIndex].likedBy
+        .map((user) => {
+          return user.uid;
+        })
+        .indexOf(currentUser.uid);
+
+      const tempLikedBy = [...group.photos[photoIndex].likedBy];
+      tempLikedBy.splice(userIndex, 1);
+      const tempGroupPhotos = [...group.photos];
+      tempGroupPhotos[photoIndex].likedBy = tempLikedBy;
+      tempGroupPhotos[photoIndex].likes--;
+      await firebaseGroup.update({
+        photos: tempGroupPhotos,
       });
     } else {
-      await firebasePhoto.update({
-        likes: photo.likes + 1,
-        likedBy: [...photo.likedBy, currentUser.uid],
+      let tempLikedBy = [...group.photos[photoIndex].likedBy];
+      tempLikedBy = tempLikedBy.concat([currentUser]);
+      const tempGroupPhotos = [...group.photos];
+      tempGroupPhotos[photoIndex].likedBy = tempLikedBy;
+      tempGroupPhotos[photoIndex].likes++;
+      await firebaseGroup.update({
+        photos: tempGroupPhotos,
       });
     }
   };

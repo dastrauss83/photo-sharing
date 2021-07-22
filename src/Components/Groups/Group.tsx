@@ -10,7 +10,7 @@ import {
 import { AddAPhoto, AddCircle, Publish } from "@material-ui/icons";
 import firebase from "firebase";
 import { useState } from "react";
-import { group, photo } from "../../App";
+import { group } from "../../App";
 import { useStyles } from "../../Styling";
 import { PhotoCard } from "./PhotoCard";
 
@@ -25,30 +25,36 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
   const [currentUploadPath, setCurrentUploadPath] = useState<string>("");
 
   const uploadFile = (event: any) => {
-    setCurrentUploadPath(event.target.files[0]);
-    // if (file) {
-    //   let data = new FormData();
-    //   data.append("file", file);
-    //   console.log(data);
-    //   // axios.post('/files', data)...
-    // }
-  };
-
-  const getPhotoUrl = async (photo: photo) => {
-    return await firebase
-      .storage()
-      .ref()
-      .child(photo.photoUrl)
-      .getDownloadURL();
+    const file = event.target.files[0];
+    const fileName = file.name;
+    setCurrentUploadPath(fileName);
   };
 
   const handleUpload = async () => {
     firebase.storage().ref().child(currentUploadPath);
+    const photoURL: string = await firebase
+      .storage()
+      .ref()
+      .child(currentUploadPath)
+      .getDownloadURL();
+
     await firebase
       .firestore()
       .collection("groups")
       .doc(`${group.id}`)
-      .update({});
+      .update({
+        photos: [
+          ...group.photos,
+          {
+            likedBy: [],
+            likes: 0,
+            photoUrl: photoURL,
+            user: currentUser,
+            time: firebase.firestore.Timestamp.now(),
+          },
+        ],
+      });
+    setCurrentUploadPath("");
   };
 
   return (
@@ -89,18 +95,27 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
               Upload a Photo
             </Typography>
             <input type="file" onChange={(e) => uploadFile(e)} />
-            <Button onClick={handleUpload}>
-              <Publish color="primary" style={{ marginRight: "5px" }} />
-              <Typography>Upload</Typography>
-            </Button>
+            {currentUploadPath !== "" ? (
+              <Button onClick={handleUpload}>
+                <Publish color="primary" style={{ marginRight: "5px" }} />
+                <Typography>Upload</Typography>
+              </Button>
+            ) : null}
           </CardContent>
         </Card>
       </Popover>
       <Container maxWidth="md">
         <Grid container spacing={4}>
-          {group.photos.map((photo) => (
-            <PhotoCard photo={photo} currentUser={currentUser} group={group} />
-          ))}
+          {group.photos.length > 0
+            ? group.photos.map((photo) => (
+                <PhotoCard
+                  key={photo.photoUrl}
+                  photo={photo}
+                  currentUser={currentUser}
+                  group={group}
+                />
+              ))
+            : null}
         </Grid>
       </Container>
     </main>

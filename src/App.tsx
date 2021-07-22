@@ -27,7 +27,7 @@ export type photo = {
   user: any;
   time: any;
   likes: number;
-  likedBy: string[];
+  likedBy: any[];
 };
 export type group = {
   name: string;
@@ -84,7 +84,7 @@ const App: React.FC = () => {
           </Route>
           {allGroups.map((group) => {
             return (
-              <Route path={`/groups/${group.name}`}>
+              <Route path={`/groups/${group.name}`} key={group.id}>
                 <Group currentUser={currentUser} group={group} />
               </Route>
             );
