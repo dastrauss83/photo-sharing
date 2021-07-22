@@ -28,6 +28,7 @@ export type photo = {
   time: any;
   likes: number;
   likedBy: any[];
+  uploadPath: string;
 };
 export type group = {
   name: string;

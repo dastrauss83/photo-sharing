@@ -44,6 +44,7 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
       await firebaseGroup.update({
         photos: tempGroupPhotos,
       });
+      await firebase.storage().ref().child(photo.uploadPath).delete();
     }
   };
 

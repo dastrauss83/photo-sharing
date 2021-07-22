@@ -83,4 +83,7 @@ export const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
   },
+  groupMainButton: {
+    marginBottom: "20px",
+  },
 }));

@@ -14,6 +14,7 @@ import {
   Publish,
 } from "@material-ui/icons";
 import firebase from "firebase";
+import "firebase/storage";
 import { useState } from "react";
 import { group } from "../../App";
 import { useStyles } from "../../Styling";
@@ -36,8 +37,11 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
   };
 
   const handleUpload = async () => {
-    firebase.storage().ref().child(currentUploadPath.name);
-    firebase.storage().ref().child(`/images/${currentUploadPath.name}`);
+    await firebase
+      .storage()
+      .ref(`${currentUploadPath.name}`)
+      .put(currentUploadPath);
+
     const photoURL: string = await firebase
       .storage()
       .ref()
@@ -57,6 +61,7 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
             photoUrl: photoURL,
             user: currentUser,
             time: firebase.firestore.Timestamp.now(),
+            uploadPath: currentUploadPath.name,
           },
         ],
       });
@@ -71,7 +76,10 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
       {group.members.filter((user) => {
         return user.uid === currentUser.uid;
       }).length > 0 ? (
-        <Button onClick={() => setUploadState(true)}>
+        <Button
+          onClick={() => setUploadState(true)}
+          className={classes.groupMainButton}
+        >
           <AddAPhoto color="primary" style={{ marginRight: "5px" }} />
           <Typography>Upload Photo to Group</Typography>
         </Button>
@@ -108,7 +116,7 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
               <input
                 type="file"
                 onChange={(e) => uploadFile(e)}
-                accept="image/jpeg"
+                accept="image/jpg"
                 className="inputFile"
               />
               <div className="fakeFile">
