@@ -1,3 +1,28 @@
 .cardMedia:hover {
   cursor: pointer;
 }
+
+.inputFile {
+  position: relative;
+  text-align: center;
+  /* -moz-opacity: 0; */
+  /* filter: alpha(opacity: 0); */
+  opacity: 0;
+  z-index: 2;
+}
+
+.inputFile:hover {
+  cursor: pointer;
+}
+
+.fakeFile {
+  position: absolute;
+  top: 0px;
+  left: 70px;
+  z-index: 1;
+  display: flex;
+}
+
+.fakeFile:hover {
+  cursor: pointer !important;
+}

@@ -7,7 +7,7 @@ import {
   CardMedia,
   Popover,
 } from "@material-ui/core";
-import { FavoriteBorder, Delete } from "@material-ui/icons";
+import { FavoriteBorder, Delete, Favorite } from "@material-ui/icons";
 import firebase from "firebase";
 import { useState } from "react";
 import { group, photo } from "../../App";
@@ -47,6 +47,20 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
     }
   };
 
+  const userLiked = (): boolean => {
+    const photoIndex = group.photos
+      .map((photoItem: photo) => {
+        return photoItem.photoUrl;
+      })
+      .indexOf(photo.photoUrl);
+
+    return (
+      group.photos[photoIndex].likedBy.map((user) => {
+        return user.uid === currentUser.uid;
+      }).length > 0
+    );
+  };
+
   const handleLike = async () => {
     const photoIndex = group.photos
       .map((photoItem: photo) => {
@@ -64,7 +78,6 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
           return user.uid;
         })
         .indexOf(currentUser.uid);
-
       const tempLikedBy = [...group.photos[photoIndex].likedBy];
       tempLikedBy.splice(userIndex, 1);
       const tempGroupPhotos = [...group.photos];
@@ -120,7 +133,14 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
           <Typography variant="subtitle1">{photo.user.displayName}</Typography>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Button onClick={handleLike}>
-              <FavoriteBorder color="primary" style={{ marginRight: "5px" }} />
+              {userLiked() ? (
+                <Favorite color="primary" style={{ marginRight: "5px" }} />
+              ) : (
+                <FavoriteBorder
+                  color="primary"
+                  style={{ marginRight: "5px" }}
+                />
+              )}
               <Typography>{photo.likes}</Typography>
             </Button>
             {currentUser.uid === photo.user.uid ? (

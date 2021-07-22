@@ -7,7 +7,12 @@ import {
   Card,
   CardContent,
 } from "@material-ui/core";
-import { AddAPhoto, AddCircle, Publish } from "@material-ui/icons";
+import {
+  AddAPhoto,
+  AddCircle,
+  AddPhotoAlternate,
+  Publish,
+} from "@material-ui/icons";
 import firebase from "firebase";
 import { useState } from "react";
 import { group } from "../../App";
@@ -22,20 +27,21 @@ type GroupProps = {
 export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
   const classes = useStyles();
   const [uploadState, setUploadState] = useState<boolean>(false);
-  const [currentUploadPath, setCurrentUploadPath] = useState<string>("");
+  const [currentUploadPath, setCurrentUploadPath] = useState<any>();
 
   const uploadFile = (event: any) => {
     const file = event.target.files[0];
-    const fileName = file.name;
-    setCurrentUploadPath(fileName);
+    // const fileName = file.name;
+    setCurrentUploadPath(file);
   };
 
   const handleUpload = async () => {
-    firebase.storage().ref().child(currentUploadPath);
+    firebase.storage().ref().child(currentUploadPath.name);
+    firebase.storage().ref().child(`/images/${currentUploadPath.name}`);
     const photoURL: string = await firebase
       .storage()
       .ref()
-      .child(currentUploadPath)
+      .child(currentUploadPath.name)
       .getDownloadURL();
 
     await firebase
@@ -54,7 +60,7 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
           },
         ],
       });
-    setCurrentUploadPath("");
+    setCurrentUploadPath(null);
   };
 
   return (
@@ -78,7 +84,10 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
       <Popover
         open={uploadState}
         anchorReference="none"
-        onClose={() => setUploadState(!uploadState)}
+        onClose={() => {
+          setUploadState(!uploadState);
+          setCurrentUploadPath(null);
+        }}
         transformOrigin={{
           horizontal: "center",
           vertical: "center",
@@ -94,12 +103,27 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
             <Typography gutterBottom variant="h2">
               Upload a Photo
             </Typography>
-            <input type="file" onChange={(e) => uploadFile(e)} />
-            {currentUploadPath !== "" ? (
-              <Button onClick={handleUpload}>
-                <Publish color="primary" style={{ marginRight: "5px" }} />
-                <Typography>Upload</Typography>
-              </Button>
+
+            <div style={{ position: "relative", marginBottom: "10px" }}>
+              <input
+                type="file"
+                onChange={(e) => uploadFile(e)}
+                accept="image/jpeg"
+                className="inputFile"
+              />
+              <div className="fakeFile">
+                <AddPhotoAlternate color="primary" />
+                <Typography gutterBottom>Choose a Photo</Typography>
+              </div>
+            </div>
+            {currentUploadPath ? (
+              <>
+                <Typography gutterBottom>{currentUploadPath.name}</Typography>
+                <Button onClick={handleUpload}>
+                  <Publish color="primary" style={{ marginRight: "5px" }} />
+                  <Typography>Upload</Typography>
+                </Button>
+              </>
             ) : null}
           </CardContent>
         </Card>
