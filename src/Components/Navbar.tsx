@@ -1,9 +1,17 @@
 import { AppBar, Grid, Toolbar, Button, Typography } from "@material-ui/core";
-import { CameraEnhance } from "@material-ui/icons";
+import { CameraEnhance, Group, AccountCircle } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { useStyles } from "../Styling";
 
-export const Navbar: React.FC = () => {
+type NavbarProps = {
+  currentUser: any;
+  setCurrentUser: any;
+};
+
+export const Navbar: React.FC<NavbarProps> = ({
+  currentUser,
+  setCurrentUser,
+}) => {
   const classes = useStyles();
 
   return (
@@ -28,6 +36,38 @@ export const Navbar: React.FC = () => {
               </Link>
             </Button>
           </Grid>
+          {!currentUser ? (
+            <>
+              <Grid item>
+                <Button>
+                  <Link to="/all-groups" className={classes.link}>
+                    <Group className={classes.navbarIcon} />
+                    <Typography
+                      variant="h6"
+                      className={classes.navbar}
+                      style={{ marginLeft: "5px" }}
+                    >
+                      All Groups
+                    </Typography>
+                  </Link>
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button onClick={() => setCurrentUser()}>
+                  <Link to="/" className={classes.link}>
+                    <AccountCircle className={classes.navbarIcon} />
+                    <Typography
+                      variant="h6"
+                      className={classes.navbar}
+                      style={{ marginLeft: "5px" }}
+                    >
+                      Log Out
+                    </Typography>
+                  </Link>
+                </Button>
+              </Grid>
+            </>
+          ) : null}
         </Grid>
       </Toolbar>
     </AppBar>

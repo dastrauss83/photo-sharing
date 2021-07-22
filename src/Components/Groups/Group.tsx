@@ -1,17 +1,13 @@
 import { Container, Grid, Typography } from "@material-ui/core";
 import { group } from "../../App";
 import { useStyles } from "../../Styling";
-import { GroupsCard } from "./GroupsCard";
 
-type AllGroupsProps = {
+type GroupProps = {
+  group: group;
   currentUser: any;
-  allGroups: group[];
 };
 
-export const AllGroups: React.FC<AllGroupsProps> = ({
-  currentUser,
-  allGroups,
-}) => {
+export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
   const classes = useStyles();
 
   return (
@@ -23,17 +19,13 @@ export const AllGroups: React.FC<AllGroupsProps> = ({
           color="textPrimary"
           gutterBottom
         >
-          All Groups
+          {group.name}
         </Typography>
         <Container maxWidth="md">
           <Grid container spacing={4}>
-            {allGroups.map((group) => (
-              <GroupsCard
-                key={group.name}
-                currentUser={currentUser}
-                group={group}
-              />
-            ))}
+            {/* {group.photos.map((photo) => (
+              <div></div>
+            ))} */}
           </Grid>
         </Container>
       </div>

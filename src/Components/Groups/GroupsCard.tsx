@@ -1,5 +1,6 @@
 import { Button, Card, CardContent, Grid, Typography } from "@material-ui/core";
 import { AddCircle, ExitToApp, Visibility } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 import { group } from "../../App";
 import { useStyles } from "../../Styling";
 
@@ -49,8 +50,10 @@ export const GroupsCard: React.FC<GroupsCardProps> = ({
                   )
                 }
                 <Button>
-                  <Visibility color="primary" style={{ marginLeft: "5px" }} />
-                  <Typography>View</Typography>
+                  <Link to={`/groups/${group.name}`} className={classes.link}>
+                    <Visibility color="primary" style={{ marginLeft: "5px" }} />
+                    <Typography>View</Typography>
+                  </Link>
                 </Button>
               </div>
             </Grid>
