@@ -30,22 +30,24 @@ export const GroupsCard: React.FC<GroupsCardProps> = ({
             <Grid item>
               <div className={classes.gridCardButtons}>
                 {
-                  //group.users.indexOf(currentUser.uid) === -1
+                  //group.members.filter((user) => {
+                  // return user.uid === currentUser.uid;
+                  // }).length > 0
                   true ? (
-                    <Button>
-                      <AddCircle
-                        color="primary"
-                        style={{ marginRight: "5px" }}
-                      />
-                      <Typography>Join</Typography>
-                    </Button>
-                  ) : (
                     <Button>
                       <ExitToApp
                         color="primary"
                         style={{ marginRight: "5px" }}
                       />
                       <Typography>Leave</Typography>
+                    </Button>
+                  ) : (
+                    <Button>
+                      <AddCircle
+                        color="primary"
+                        style={{ marginRight: "5px" }}
+                      />
+                      <Typography>Join</Typography>
                     </Button>
                   )
                 }

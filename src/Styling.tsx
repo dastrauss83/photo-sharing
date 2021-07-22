@@ -57,8 +57,23 @@ export const useStyles = makeStyles((theme) => ({
   cardMedia: {
     paddingTop: "56.25%",
   },
+  cardMediaPopover: {
+    paddingTop: "100%",
+  },
   cardContent: {
     flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  popover: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  uploadCard: {
+    display: "flex",
+    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
   },

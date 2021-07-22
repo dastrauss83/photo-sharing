@@ -36,7 +36,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </Link>
             </Button>
           </Grid>
-          {!currentUser ? (
+          {currentUser ? (
             <>
               <Grid item>
                 <Button>

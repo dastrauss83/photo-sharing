@@ -11,6 +11,7 @@ import { Footer } from "./Components/Footer";
 import { AllGroups } from "./Components/Groups/AllGroups";
 import { LogIn } from "./Components/LogIn";
 import { Group } from "./Components/Groups/Group";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 firebase.initializeApp({
   apiKey: "AIzaSyDvzOrnfzT_p9ntckvHxSJrO0AM6W9TEGY",
@@ -27,36 +28,47 @@ export type photo = {
   time: any;
   likes: number;
   likedBy: string[];
-  id: string;
 };
 export type group = {
   name: string;
   description: string;
-  users: string[];
+  members: any[];
   photos: photo[];
+  id: string;
 };
 
 const App: React.FC = () => {
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [currentUser, setCurrentUser] = useState<any>({
+    displayName: "David",
+    uid: "asjfjadf",
+  });
+  const query = firebase.firestore().collection("groups");
+  const [groups] = useCollectionData(query, { idField: "id" });
   const [allGroups, setAllGroups] = useState<group[]>([]);
 
-  const handleGetAllGroups = async () => {
-    const tempGroups: group[] = [];
-    await firebase
-      .firestore()
-      .collection("groups")
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          tempGroups.push(doc.data() as group);
-        });
-      });
-    setAllGroups(tempGroups);
-  };
-
   useEffect(() => {
-    handleGetAllGroups();
-  }, []);
+    if (groups) {
+      setAllGroups(groups as unknown as group[]);
+    }
+  }, [groups]);
+
+  // const handleGetAllGroups = async () => {
+  //   const tempGroups: group[] = [];
+  //   await firebase
+  //     .firestore()
+  //     .collection("groups")
+  //     .get()
+  //     .then((querySnapshot) => {
+  //       querySnapshot.forEach((doc) => {
+  //         tempGroups.push(doc.data() as group);
+  //       });
+  //     });
+  //   setAllGroups(tempGroups);
+  // };
+
+  // useEffect(() => {
+  //   handleGetAllGroups();
+  // }, []);
 
   return (
     <ThemeProvider theme={theme}>
