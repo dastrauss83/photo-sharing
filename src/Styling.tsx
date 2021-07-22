@@ -49,4 +49,17 @@ export const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     color: "inherit",
   },
+  card: {
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+  },
+  cardMedia: {
+    paddingTop: "56.25%",
+  },
+  cardContent: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 }));

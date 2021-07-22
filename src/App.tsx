@@ -23,8 +23,11 @@ firebase.initializeApp({
 
 export type photo = {
   photoUrl: string;
-  user: string;
+  user: any;
   time: any;
+  likes: number;
+  likedBy: string[];
+  id: string;
 };
 export type group = {
   name: string;

@@ -51,7 +51,10 @@ export const GroupsCard: React.FC<GroupsCardProps> = ({
                 }
                 <Button>
                   <Link to={`/groups/${group.name}`} className={classes.link}>
-                    <Visibility color="primary" style={{ marginLeft: "5px" }} />
+                    <Visibility
+                      color="primary"
+                      style={{ marginRight: "5px" }}
+                    />
                     <Typography>View</Typography>
                   </Link>
                 </Button>
