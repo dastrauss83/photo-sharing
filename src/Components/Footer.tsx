@@ -1,6 +1,7 @@
 import { useStyles } from "../Styling";
 import { Button, Grid, Typography } from "@material-ui/core";
 import { CameraEnhance } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 
 export const Footer: React.FC = () => {
   const classes = useStyles();
@@ -18,14 +19,16 @@ export const Footer: React.FC = () => {
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             style={{ paddingLeft: "0px" }}
           >
-            <CameraEnhance color="primary" />
-            <Typography
-              variant="h6"
-              color="textPrimary"
-              style={{ marginLeft: "5px" }}
-            >
-              Photo Share
-            </Typography>
+            <Link to="/my-feed" className={classes.link}>
+              <CameraEnhance color="primary" />
+              <Typography
+                variant="h6"
+                color="textPrimary"
+                style={{ marginLeft: "5px" }}
+              >
+                Photo Share
+              </Typography>
+            </Link>
           </Button>
         </Grid>
         <Grid item>

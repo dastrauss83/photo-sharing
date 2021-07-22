@@ -14,10 +14,11 @@ export const theme = createTheme({
 
 export const useStyles = makeStyles((theme) => ({
   container: {
-    marginTop: "100px",
+    marginTop: "20px",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    padding: theme.spacing(8, 0, 6),
   },
   loginButton: {
     marginTop: "50px",
@@ -31,5 +32,21 @@ export const useStyles = makeStyles((theme) => ({
   footer: {
     padding: "50px 0",
     height: "150px",
+  },
+  groupCard: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  gridCardButtons: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  link: {
+    textDecoration: "none",
+    display: "flex",
+    alignItems: "center",
+    color: "inherit",
   },
 }));

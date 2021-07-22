@@ -1,5 +1,6 @@
 import { AppBar, Grid, Toolbar, Button, Typography } from "@material-ui/core";
 import { CameraEnhance } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 import { useStyles } from "../Styling";
 
 export const Navbar: React.FC = () => {
@@ -15,14 +16,16 @@ export const Navbar: React.FC = () => {
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
-              <CameraEnhance className={classes.navbarIcon} />
-              <Typography
-                variant="h6"
-                className={classes.navbar}
-                style={{ marginLeft: "5px" }}
-              >
-                Photo Share
-              </Typography>
+              <Link to="/my-feed" className={classes.link}>
+                <CameraEnhance className={classes.navbarIcon} />
+                <Typography
+                  variant="h6"
+                  className={classes.navbar}
+                  style={{ marginLeft: "5px" }}
+                >
+                  Photo Share
+                </Typography>
+              </Link>
             </Button>
           </Grid>
         </Grid>
