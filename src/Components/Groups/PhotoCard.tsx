@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import { FavoriteBorder, Delete, Favorite } from "@material-ui/icons";
 import firebase from "firebase";
+import moment from "moment";
 import { useState } from "react";
 import { group, photo } from "../../App";
 import { useStyles } from "../../Styling";
@@ -115,7 +116,7 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
             horizontal: "center",
             vertical: "center",
           }}
-          elevation={20}
+          elevation={30}
           PaperProps={{ style: { width: "50%" } }}
           classes={{
             root: classes.popover,
@@ -133,7 +134,15 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
           </a>
         </Popover>
         <CardContent className={classes.cardContent}>
-          <Typography variant="subtitle1">{photo.user.displayName}</Typography>
+          <Typography variant="subtitle1">
+            <span style={{ fontStyle: "italic", marginRight: "5px" }}>
+              Shared By:
+            </span>
+            {photo.user.displayName}
+          </Typography>
+          <Typography variant="subtitle1">
+            {moment(photo.time.toDate()).startOf("minute").fromNow()}
+          </Typography>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Button onClick={handleLike}>
               {userLiked() ? (

@@ -170,14 +170,18 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
       <Container maxWidth="md">
         <Grid container spacing={4}>
           {group.photos.length > 0
-            ? group.photos.map((photo) => (
-                <PhotoCard
-                  key={photo.photoUrl}
-                  photo={photo}
-                  currentUser={currentUser}
-                  group={group}
-                />
-              ))
+            ? group.photos
+                .sort((a, b) => {
+                  return b.time - a.time;
+                })
+                .map((photo) => (
+                  <PhotoCard
+                    key={photo.photoUrl}
+                    photo={photo}
+                    currentUser={currentUser}
+                    group={group}
+                  />
+                ))
             : null}
         </Grid>
         <div className={classes.members}>
