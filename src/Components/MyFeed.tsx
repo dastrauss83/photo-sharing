@@ -18,6 +18,7 @@ export const MyFeed: React.FC<MyFeedProps> = ({ currentUser, allGroups }) => {
   const getUserGroups = () => {
     const tempUserGroups = allGroups.filter((group) => {
       return (
+        //user  undefined handle if memebrs is empty
         group.members.filter((user) => {
           return user.uid === currentUser.uid;
         }).length > 0
