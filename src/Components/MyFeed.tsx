@@ -16,15 +16,21 @@ export const MyFeed: React.FC<MyFeedProps> = ({ currentUser, allGroups }) => {
   const [userGroups, setUserGroups] = useState<group[]>([]);
 
   const getUserGroups = () => {
-    const tempUserGroups = allGroups.filter((group) => {
-      return (
-        //user  undefined handle if memebrs is empty
-        group.members.filter((user) => {
-          return user.uid === currentUser.uid;
-        }).length > 0
-      );
-    });
-    setUserGroups(tempUserGroups);
+    if (currentUser) {
+      const tempUserGroups = allGroups.filter((group) => {
+        if (group.members.length > 0) {
+          return (
+            //user  undefined handle if memebrs is empty
+            group.members.filter((user) => {
+              return user.uid === currentUser.uid;
+            }).length > 0
+          );
+        } else {
+          return false;
+        }
+      });
+      setUserGroups(tempUserGroups);
+    }
   };
 
   useEffect(() => {

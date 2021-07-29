@@ -40,10 +40,7 @@ export type group = {
 };
 
 const App: React.FC = () => {
-  const [currentUser, setCurrentUser] = useState<any>({
-    displayName: "David",
-    uid: "asjfjadf",
-  });
+  const [currentUser, setCurrentUser] = useState<any>();
   const query = firebase.firestore().collection("groups");
   const [groups] = useCollectionData(query, { idField: "id" });
   const [allGroups, setAllGroups] = useState<group[]>([]);
@@ -53,6 +50,18 @@ const App: React.FC = () => {
       setAllGroups(groups as unknown as group[]);
     }
   }, [groups]);
+
+  useEffect(() => {
+    if (localStorage.getItem("currentUser")) {
+      setCurrentUser(
+        JSON.parse(localStorage.getItem("currentUser") || "empty")
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+  }, [currentUser, setCurrentUser]);
 
   return (
     <ThemeProvider theme={theme}>
