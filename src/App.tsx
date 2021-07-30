@@ -2,7 +2,11 @@ import "./App.css";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import { CssBaseline, ThemeProvider } from "@material-ui/core";
+import {
+  CircularProgress,
+  CssBaseline,
+  ThemeProvider,
+} from "@material-ui/core";
 import { theme } from "./Styling";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -44,7 +48,7 @@ const App: React.FC = () => {
   const query = firebase.firestore().collection("groups");
   const [groups] = useCollectionData(query, { idField: "id" });
   const [allGroups, setAllGroups] = useState<group[]>([]);
-  const [loadingUserGroups, setLoadingUserGroups] = useState<boolean>(true);
+  const [loadingUserGroups, setLoadingUserGroups] = useState<boolean>(false);
   const [userGroups, setUserGroups] = useState<group[]>([]);
 
   useEffect(() => {
@@ -81,13 +85,15 @@ const App: React.FC = () => {
 
   useEffect(() => {
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
-    getUserGroups();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser, setCurrentUser]);
 
   useEffect(() => {
-    setTimeout(() => setLoadingUserGroups(false), 3000);
-  }, [userGroups]);
+    setLoadingUserGroups(true);
+    getUserGroups();
+    setTimeout(() => setLoadingUserGroups(false), 1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allGroups]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -100,20 +106,22 @@ const App: React.FC = () => {
         />
         <Switch>
           <Route exact path="/my-feed">
-            {currentUser === "noUser" ? (
+            {loadingUserGroups ? (
+              <div
+                style={{
+                  marginTop: "200px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <CircularProgress />
+              </div>
+            ) : currentUser === "noUser" ? (
               <Redirect to="/" />
             ) : (
-              <MyFeed
-                currentUser={currentUser}
-                loadingUserGroups={loadingUserGroups}
-                userGroups={userGroups}
-              />
+              <MyFeed currentUser={currentUser} userGroups={userGroups} />
             )}
-            {/* <MyFeed
-              currentUser={currentUser}
-              loadingUserGroups={loadingUserGroups}
-              userGroups={userGroups}
-            /> */}
           </Route>
           <Route exact path="/all-groups">
             {currentUser === "noUser" ? (
@@ -121,7 +129,6 @@ const App: React.FC = () => {
             ) : (
               <AllGroups currentUser={currentUser} allGroups={allGroups} />
             )}
-            {/* <AllGroups currentUser={currentUser} allGroups={allGroups} /> */}
           </Route>
           {allGroups.map((group) => {
             return (
@@ -131,7 +138,6 @@ const App: React.FC = () => {
                 ) : (
                   <Group currentUser={currentUser} group={group} />
                 )}
-                {/* <Group currentUser={currentUser} group={group} /> */}
               </Route>
             );
           })}
@@ -139,13 +145,12 @@ const App: React.FC = () => {
             {currentUser === "noUser" ? (
               <Redirect to="/" />
             ) : (
-              <MyFeed
-                currentUser={currentUser}
-                loadingUserGroups={loadingUserGroups}
-                userGroups={userGroups}
-              />
+              <Redirect to="/my-feed" />
             )}
-            <LogIn setCurrentUser={setCurrentUser} />
+            <LogIn
+              setCurrentUser={setCurrentUser}
+              setLoadingUserGroups={setLoadingUserGroups}
+            />
           </Route>
         </Switch>
         <Footer />

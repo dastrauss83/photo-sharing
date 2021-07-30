@@ -6,19 +6,25 @@ import { useStyles } from "../../Styling";
 
 type LogInProps = {
   setCurrentUser: any;
+  setLoadingUserGroups: any;
 };
 
-export const LogIn: React.FC<LogInProps> = ({ setCurrentUser }) => {
+export const LogIn: React.FC<LogInProps> = ({
+  setCurrentUser,
+  setLoadingUserGroups,
+}) => {
   const classes = useStyles();
 
   const handleLogin = async () => {
+    setLoadingUserGroups(true);
     const provider = new firebase.auth.GoogleAuthProvider();
-    firebase
+    await firebase
       .auth()
       .signInWithPopup(provider)
       .then((result) => {
         setCurrentUser(result.user);
       });
+    setLoadingUserGroups(false);
   };
 
   return (

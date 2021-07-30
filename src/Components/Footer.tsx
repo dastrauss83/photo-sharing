@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             style={{ paddingLeft: "0px" }}
           >
-            <Link to="/my-feed" className={classes.link}>
+            <Link to="/" className={classes.link}>
               <CameraEnhance color="primary" />
               <Typography
                 variant="h6"

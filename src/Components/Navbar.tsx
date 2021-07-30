@@ -26,7 +26,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
-              <Link to="/my-feed" className={classes.link}>
+              <Link to="/" className={classes.link}>
                 <CameraEnhance className={classes.navbarIcon} />
                 <Typography
                   variant="h6"
@@ -58,7 +58,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <Button
                   onClick={() => {
                     setCurrentUser("noUser");
-                    setLoadingUserGroups(true);
+                    setLoadingUserGroups(false);
                   }}
                 >
                   <Link to="/" className={classes.link}>
