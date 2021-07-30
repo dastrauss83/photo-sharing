@@ -49,8 +49,6 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
       .child(currentUploadPath.name)
       .getDownloadURL();
 
-    console.log(photoURL);
-
     await firebase
       .firestore()
       .collection("groups")
@@ -60,7 +58,6 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
           ...group.photos,
           {
             likedBy: [],
-            likes: 0,
             photoUrl: photoURL,
             user: {
               displayName: currentUser.displayName,

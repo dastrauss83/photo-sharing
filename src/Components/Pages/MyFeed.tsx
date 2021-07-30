@@ -16,12 +16,18 @@ export const MyFeed: React.FC<MyFeedProps> = ({ currentUser, userGroups }) => {
       <Typography variant="h2" align="center" color="textPrimary" gutterBottom>
         My Feed
       </Typography>
-      <Typography variant="h5" align="center" color="textSecondary" paragraph>
+      <Typography
+        variant="h5"
+        align="center"
+        color="textSecondary"
+        paragraph
+        gutterBottom
+      >
         These are all Photos from the groups you have joined.
       </Typography>
       <Container maxWidth="md">
         <Grid container spacing={4}>
-          {userGroups.length > 0 ? (
+          {userGroups.length > 0 &&
             userGroups.map((group) =>
               group.photos.map((photo) => (
                 <PhotoCard
@@ -31,13 +37,19 @@ export const MyFeed: React.FC<MyFeedProps> = ({ currentUser, userGroups }) => {
                   group={group}
                 />
               ))
-            )
-          ) : (
-            <Typography style={{ alignSelf: "center" }}>
-              Join a group to view photos!
-            </Typography>
-          )}
+            )}
         </Grid>
+        <div style={{ marginTop: "30px" }}>
+          <Typography
+            gutterBottom
+            variant="h4"
+            align="center"
+            color="textPrimary"
+            paragraph
+          >
+            Join a group to view photos!
+          </Typography>
+        </div>
       </Container>
     </main>
   );

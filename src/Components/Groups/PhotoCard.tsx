@@ -80,11 +80,11 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
           return user.uid;
         })
         .indexOf(currentUser.uid);
+
       const tempLikedBy = [...group.photos[photoIndex].likedBy];
       tempLikedBy.splice(userIndex, 1);
       const tempGroupPhotos = [...group.photos];
       tempGroupPhotos[photoIndex].likedBy = tempLikedBy;
-      tempGroupPhotos[photoIndex].likes--;
       await firebaseGroup.update({
         photos: tempGroupPhotos,
       });
@@ -93,7 +93,6 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
       tempLikedBy = tempLikedBy.concat([currentUser]);
       const tempGroupPhotos = [...group.photos];
       tempGroupPhotos[photoIndex].likedBy = tempLikedBy;
-      tempGroupPhotos[photoIndex].likes++;
       await firebaseGroup.update({
         photos: tempGroupPhotos,
       });
@@ -153,7 +152,7 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
                   style={{ marginRight: "5px" }}
                 />
               )}
-              <Typography>{photo.likes}</Typography>
+              <Typography>{photo.likedBy.length}</Typography>
             </Button>
             {currentUser.uid === photo.user.uid ? (
               <Button onClick={handleDelete}>

@@ -31,7 +31,6 @@ export type photo = {
   photoUrl: string;
   user: any;
   time: any;
-  likes: number;
   likedBy: any[];
   uploadPath: string;
 };
@@ -141,7 +140,7 @@ const App: React.FC = () => {
               </Route>
             );
           })}
-          <Route exact path="/">
+          <Route path="/">
             {currentUser === "noUser" ? (
               <Redirect to="/" />
             ) : (
