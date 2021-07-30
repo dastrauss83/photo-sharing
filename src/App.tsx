@@ -90,7 +90,7 @@ const App: React.FC = () => {
   useEffect(() => {
     setLoadingUserGroups(true);
     getUserGroups();
-    setTimeout(() => setLoadingUserGroups(false), 0);
+    setTimeout(() => setLoadingUserGroups(false), 1000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allGroups]);
 
