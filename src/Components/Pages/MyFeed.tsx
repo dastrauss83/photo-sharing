@@ -4,10 +4,9 @@ import {
   Grid,
   CircularProgress,
 } from "@material-ui/core";
-
-import { group } from "../App";
-import { useStyles } from "../Styling";
-import { PhotoCard } from "./Groups/PhotoCard";
+import { group } from "../../App";
+import { useStyles } from "../../Styling";
+import { PhotoCard } from "../Groups/PhotoCard";
 
 type MyFeedProps = {
   currentUser: any;

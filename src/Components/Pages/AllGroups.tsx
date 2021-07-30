@@ -13,7 +13,7 @@ import firebase from "firebase";
 import { useState } from "react";
 import { group } from "../../App";
 import { useStyles } from "../../Styling";
-import { GroupsCard } from "./GroupsCard";
+import { GroupsCard } from "../Groups/GroupsCard";
 
 type AllGroupsProps = {
   currentUser: any;

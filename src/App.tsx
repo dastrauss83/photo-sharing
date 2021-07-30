@@ -4,15 +4,15 @@ import "firebase/auth";
 import "firebase/firestore";
 import { CssBaseline, ThemeProvider } from "@material-ui/core";
 import { theme } from "./Styling";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Navbar } from "./Components/Navbar";
 import { Footer } from "./Components/Footer";
-import { AllGroups } from "./Components/Groups/AllGroups";
-import { LogIn } from "./Components/LogIn";
-import { Group } from "./Components/Groups/Group";
+import { AllGroups } from "./Components/Pages/AllGroups";
+import { LogIn } from "./Components/Pages/LogIn";
+import { Group } from "./Components/Pages/Group";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { MyFeed } from "./Components/MyFeed";
+import { MyFeed } from "./Components/Pages/MyFeed";
 
 firebase.initializeApp({
   apiKey: "AIzaSyDvzOrnfzT_p9ntckvHxSJrO0AM6W9TEGY",
@@ -92,36 +92,64 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
+      <BrowserRouter>
         <Navbar
           currentUser={currentUser}
           setCurrentUser={setCurrentUser}
           setLoadingUserGroups={setLoadingUserGroups}
         />
         <Switch>
-          <Route path="/my-feed">
-            <MyFeed
+          <Route exact path="/my-feed">
+            {currentUser === "noUser" ? (
+              <Redirect to="/" />
+            ) : (
+              <MyFeed
+                currentUser={currentUser}
+                loadingUserGroups={loadingUserGroups}
+                userGroups={userGroups}
+              />
+            )}
+            {/* <MyFeed
               currentUser={currentUser}
               loadingUserGroups={loadingUserGroups}
               userGroups={userGroups}
-            />
+            /> */}
           </Route>
-          <Route path="/all-groups">
-            <AllGroups currentUser={currentUser} allGroups={allGroups} />
+          <Route exact path="/all-groups">
+            {currentUser === "noUser" ? (
+              <Redirect to="/" />
+            ) : (
+              <AllGroups currentUser={currentUser} allGroups={allGroups} />
+            )}
+            {/* <AllGroups currentUser={currentUser} allGroups={allGroups} /> */}
           </Route>
           {allGroups.map((group) => {
             return (
-              <Route path={`/groups/${group.name}`} key={group.id}>
-                <Group currentUser={currentUser} group={group} />
+              <Route exact path={`/groups/${group.name}`} key={group.id}>
+                {currentUser === "noUser" ? (
+                  <Redirect to="/" />
+                ) : (
+                  <Group currentUser={currentUser} group={group} />
+                )}
+                {/* <Group currentUser={currentUser} group={group} /> */}
               </Route>
             );
           })}
-          <Route path="/">
+          <Route exact path="/">
+            {currentUser === "noUser" ? (
+              <Redirect to="/" />
+            ) : (
+              <MyFeed
+                currentUser={currentUser}
+                loadingUserGroups={loadingUserGroups}
+                userGroups={userGroups}
+              />
+            )}
             <LogIn setCurrentUser={setCurrentUser} />
           </Route>
         </Switch>
         <Footer />
-      </Router>
+      </BrowserRouter>
     </ThemeProvider>
   );
 };

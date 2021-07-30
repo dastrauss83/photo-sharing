@@ -19,7 +19,7 @@ import "firebase/storage";
 import { useState } from "react";
 import { group } from "../../App";
 import { useStyles } from "../../Styling";
-import { PhotoCard } from "./PhotoCard";
+import { PhotoCard } from "../Groups/PhotoCard";
 
 type GroupProps = {
   group: group;

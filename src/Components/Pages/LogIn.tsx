@@ -2,7 +2,7 @@ import { Button, Typography } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
 import firebase from "firebase";
 import { Link } from "react-router-dom";
-import { useStyles } from "../Styling";
+import { useStyles } from "../../Styling";
 
 type LogInProps = {
   setCurrentUser: any;
