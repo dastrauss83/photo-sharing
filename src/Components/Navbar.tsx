@@ -36,7 +36,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </Link>
             </Button>
           </Grid>
-          {currentUser ? (
+          {currentUser !== "noUser" ? (
             <>
               <Grid item>
                 <Button>
@@ -53,7 +53,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </Button>
               </Grid>
               <Grid item>
-                <Button onClick={() => setCurrentUser()}>
+                <Button onClick={() => setCurrentUser("noUser")}>
                   <Link to="/" className={classes.link}>
                     <AccountCircle className={classes.navbarIcon} />
                     <Typography

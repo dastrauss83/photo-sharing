@@ -40,10 +40,12 @@ export type group = {
 };
 
 const App: React.FC = () => {
-  const [currentUser, setCurrentUser] = useState<any>();
+  const [currentUser, setCurrentUser] = useState<any>("noUser");
   const query = firebase.firestore().collection("groups");
   const [groups] = useCollectionData(query, { idField: "id" });
   const [allGroups, setAllGroups] = useState<group[]>([]);
+  const [loadingUserGroups, setLoadingUserGroups] = useState<boolean>(true);
+  const [userGroups, setUserGroups] = useState<group[]>([]);
 
   useEffect(() => {
     if (groups) {
@@ -52,15 +54,37 @@ const App: React.FC = () => {
   }, [groups]);
 
   useEffect(() => {
-    if (localStorage.getItem("currentUser")) {
+    if (localStorage.getItem("currentUser") !== "noUser") {
       setCurrentUser(
         JSON.parse(localStorage.getItem("currentUser") || "empty")
       );
     }
   }, []);
 
+  const getUserGroups = () => {
+    if (currentUser !== "noUser") {
+      const tempUserGroups = allGroups.filter((group) => {
+        if (group.members.length > 0) {
+          return (
+            // user  undefined handle if memebrs is empty
+            group.members.filter((user) => {
+              return user.uid === currentUser.uid;
+            }).length > 0
+          );
+        } else {
+          return false;
+        }
+      });
+      setUserGroups(tempUserGroups);
+    }
+  };
+
   useEffect(() => {
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    setLoadingUserGroups(true);
+    getUserGroups();
+    setLoadingUserGroups(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser, setCurrentUser]);
 
   return (
@@ -70,7 +94,11 @@ const App: React.FC = () => {
         <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
         <Switch>
           <Route path="/my-feed">
-            <MyFeed currentUser={currentUser} allGroups={allGroups} />
+            <MyFeed
+              currentUser={currentUser}
+              loadingUserGroups={loadingUserGroups}
+              userGroups={userGroups}
+            />
           </Route>
           <Route path="/all-groups">
             <AllGroups currentUser={currentUser} allGroups={allGroups} />
