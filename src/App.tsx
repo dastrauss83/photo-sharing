@@ -81,17 +81,23 @@ const App: React.FC = () => {
 
   useEffect(() => {
     localStorage.setItem("currentUser", JSON.stringify(currentUser));
-    setLoadingUserGroups(true);
     getUserGroups();
-    setLoadingUserGroups(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser, setCurrentUser]);
+
+  useEffect(() => {
+    setTimeout(() => setLoadingUserGroups(false), 3000);
+  }, [userGroups]);
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
+        <Navbar
+          currentUser={currentUser}
+          setCurrentUser={setCurrentUser}
+          setLoadingUserGroups={setLoadingUserGroups}
+        />
         <Switch>
           <Route path="/my-feed">
             <MyFeed

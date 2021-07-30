@@ -6,11 +6,13 @@ import { useStyles } from "../Styling";
 type NavbarProps = {
   currentUser: any;
   setCurrentUser: any;
+  setLoadingUserGroups: any;
 };
 
 export const Navbar: React.FC<NavbarProps> = ({
   currentUser,
   setCurrentUser,
+  setLoadingUserGroups,
 }) => {
   const classes = useStyles();
 
@@ -53,7 +55,12 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </Button>
               </Grid>
               <Grid item>
-                <Button onClick={() => setCurrentUser("noUser")}>
+                <Button
+                  onClick={() => {
+                    setCurrentUser("noUser");
+                    setLoadingUserGroups(true);
+                  }}
+                >
                   <Link to="/" className={classes.link}>
                     <AccountCircle className={classes.navbarIcon} />
                     <Typography
