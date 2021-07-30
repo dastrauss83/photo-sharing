@@ -39,17 +39,19 @@ export const MyFeed: React.FC<MyFeedProps> = ({ currentUser, userGroups }) => {
               ))
             )}
         </Grid>
-        <div style={{ marginTop: "30px" }}>
-          <Typography
-            gutterBottom
-            variant="h4"
-            align="center"
-            color="textPrimary"
-            paragraph
-          >
-            Join a group to view photos!
-          </Typography>
-        </div>
+        {userGroups.length === 0 ? (
+          <div style={{ marginTop: "30px" }}>
+            <Typography
+              gutterBottom
+              variant="h4"
+              align="center"
+              color="textPrimary"
+              paragraph
+            >
+              Join a group to view photos!
+            </Typography>
+          </div>
+        ) : null}
       </Container>
     </main>
   );

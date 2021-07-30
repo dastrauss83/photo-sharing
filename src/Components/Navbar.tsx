@@ -6,13 +6,11 @@ import { useStyles } from "../Styling";
 type NavbarProps = {
   currentUser: any;
   setCurrentUser: any;
-  setLoadingUserGroups: any;
 };
 
 export const Navbar: React.FC<NavbarProps> = ({
   currentUser,
   setCurrentUser,
-  setLoadingUserGroups,
 }) => {
   const classes = useStyles();
 
@@ -58,7 +56,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <Button
                   onClick={() => {
                     setCurrentUser("noUser");
-                    setLoadingUserGroups(false);
                   }}
                 >
                   <Link to="/" className={classes.link}>

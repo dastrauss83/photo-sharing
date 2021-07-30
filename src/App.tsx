@@ -90,19 +90,15 @@ const App: React.FC = () => {
   useEffect(() => {
     setLoadingUserGroups(true);
     getUserGroups();
-    setTimeout(() => setLoadingUserGroups(false), 1000);
+    setTimeout(() => setLoadingUserGroups(false), 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allGroups]);
+  }, [allGroups, currentUser]);
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
-        <Navbar
-          currentUser={currentUser}
-          setCurrentUser={setCurrentUser}
-          setLoadingUserGroups={setLoadingUserGroups}
-        />
+        <Navbar currentUser={currentUser} setCurrentUser={setCurrentUser} />
         <Switch>
           <Route exact path="/my-feed">
             {loadingUserGroups ? (
