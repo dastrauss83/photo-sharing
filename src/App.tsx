@@ -92,7 +92,7 @@ const App: React.FC = () => {
     getUserGroups();
     setTimeout(() => setLoadingUserGroups(false), 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allGroups, currentUser]);
+  }, [allGroups]);
 
   return (
     <ThemeProvider theme={theme}>
