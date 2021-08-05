@@ -127,13 +127,6 @@ const App: React.FC = () => {
               <AllGroups currentUser={currentUser} allGroups={allGroups} />
             )}
           />
-          {/* <Route exact path="/all-groups">
-            {currentUser === "noUser" ? (
-              <Redirect to="/" />
-            ) : (
-              <AllGroups currentUser={currentUser} allGroups={allGroups} />
-            )}
-          </Route> */}
           {allGroups.map((group) => {
             return (
               <ProtectedRoute
@@ -143,13 +136,6 @@ const App: React.FC = () => {
                 currentUser={currentUser}
                 render={() => <Group currentUser={currentUser} group={group} />}
               />
-              // <Route exact path={`/groups/${group.name}`} key={group.id}>
-              //   {currentUser === "noUser" ? (
-              //     <Redirect to="/" />
-              //   ) : (
-              //     <Group currentUser={currentUser} group={group} />
-              //   )}
-              // </Route>
             );
           })}
           <Route path="/">
