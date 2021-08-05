@@ -17,7 +17,7 @@ import {
 import firebase from "firebase";
 import "firebase/storage";
 import { useState } from "react";
-import { group } from "../../App";
+import { currentUserInList, group } from "../../App";
 import { useStyles } from "../../Styling";
 import { PhotoCard } from "../Groups/PhotoCard";
 
@@ -106,9 +106,7 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
       <Typography variant="h5" align="center" color="textSecondary" paragraph>
         {group.description}
       </Typography>
-      {group.members.filter((user) => {
-        return user.uid === currentUser.uid;
-      }).length > 0 ? (
+      {currentUserInList(group.members, currentUser) ? (
         <Button
           onClick={() => setUploadState(true)}
           className={classes.groupMainButton}
@@ -186,9 +184,7 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
               ))}
         </Grid>
         <div className={classes.members}>
-          {group.members.filter((user) => {
-            return user.uid === currentUser.uid;
-          }).length > 0 && (
+          {currentUserInList(group.members, currentUser) && (
             <Button onClick={handleLeave}>
               <ExitToApp color="primary" style={{ marginRight: "5px" }} />
               <Typography>Leave</Typography>

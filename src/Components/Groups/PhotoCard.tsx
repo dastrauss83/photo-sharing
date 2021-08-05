@@ -11,7 +11,7 @@ import { FavoriteBorder, Delete, Favorite } from "@material-ui/icons";
 import firebase from "firebase";
 import moment from "moment";
 import { useState } from "react";
-import { group, photo } from "../../App";
+import { currentUserInList, group, photo } from "../../App";
 import { useStyles } from "../../Styling";
 
 type PhotoCardProps = {
@@ -56,11 +56,7 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
       })
       .indexOf(photo.photoUrl);
 
-    return (
-      group.photos[photoIndex].likedBy.map((user) => {
-        return user.uid === currentUser.uid;
-      }).length > 0
-    );
+    return currentUserInList(group.photos[photoIndex].likedBy, currentUser);
   };
 
   const handleLike = async () => {
@@ -70,11 +66,7 @@ export const PhotoCard: React.FC<PhotoCardProps> = ({
       })
       .indexOf(photo.photoUrl);
 
-    if (
-      group.photos[photoIndex].likedBy.map((user) => {
-        return user.uid === currentUser.uid;
-      }).length > 0
-    ) {
+    if (currentUserInList(group.photos[photoIndex].likedBy, currentUser)) {
       const userIndex = group.photos[photoIndex].likedBy
         .map((user) => {
           return user.uid;

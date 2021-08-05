@@ -43,6 +43,14 @@ export type group = {
   id: string;
 };
 
+export const currentUserInList = (list: any[], currentUser: any) => {
+  return (
+    list.filter((user: any) => {
+      return user.uid === currentUser.uid;
+    }).length > 0
+  );
+};
+
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<any>("noUser");
   const query = firebase.firestore().collection("groups");
@@ -52,12 +60,6 @@ const App: React.FC = () => {
   const [userGroups, setUserGroups] = useState<group[]>([]);
 
   useEffect(() => {
-    if (groups) {
-      setAllGroups(groups as unknown as group[]);
-    }
-  }, [groups]);
-
-  useEffect(() => {
     if (localStorage.getItem("currentUser") !== "noUser") {
       setCurrentUser(
         JSON.parse(localStorage.getItem("currentUser") || "empty")
@@ -65,16 +67,22 @@ const App: React.FC = () => {
     }
   }, []);
 
+  useEffect(() => {
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (groups) {
+      setAllGroups(groups as unknown as group[]);
+    }
+  }, [groups]);
+
   const getUserGroups = () => {
     if (currentUser !== "noUser") {
       const tempUserGroups = allGroups.filter((group) => {
         if (group.members.length > 0) {
-          return (
-            // user  undefined handle if memebrs is empty
-            group.members.filter((user) => {
-              return user.uid === currentUser.uid;
-            }).length > 0
-          );
+          return currentUserInList(group.members, currentUser);
         } else {
           return false;
         }
@@ -82,11 +90,6 @@ const App: React.FC = () => {
       setUserGroups(tempUserGroups);
     }
   };
-
-  useEffect(() => {
-    localStorage.setItem("currentUser", JSON.stringify(currentUser));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentUser, setCurrentUser]);
 
   useEffect(() => {
     setLoadingUserGroups(true);

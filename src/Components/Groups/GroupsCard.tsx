@@ -2,7 +2,7 @@ import { Button, Card, CardContent, Grid, Typography } from "@material-ui/core";
 import { AddCircle, ExitToApp, Visibility } from "@material-ui/icons";
 import firebase from "firebase";
 import { Link } from "react-router-dom";
-import { group } from "../../App";
+import { currentUserInList, group } from "../../App";
 import { useStyles } from "../../Styling";
 
 type GroupsCardProps = {
@@ -57,9 +57,7 @@ export const GroupsCard: React.FC<GroupsCardProps> = ({
             </Grid>
             <Grid item>
               <div className={classes.gridCardButtons}>
-                {group.members.filter((user) => {
-                  return user.uid === currentUser.uid;
-                }).length > 0 ? (
+                {currentUserInList(group.members, currentUser) ? (
                   <Button onClick={handleLeave}>
                     <ExitToApp color="primary" style={{ marginRight: "5px" }} />
                     <Typography>Leave</Typography>
