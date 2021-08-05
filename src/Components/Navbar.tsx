@@ -36,7 +36,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               </Link>
             </Button>
           </Grid>
-          {currentUser !== "noUser" ? (
+          {currentUser !== "noUser" && (
             <>
               <Grid item>
                 <Button>
@@ -71,7 +71,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </Button>
               </Grid>
             </>
-          ) : null}
+          )}
         </Grid>
       </Toolbar>
     </AppBar>

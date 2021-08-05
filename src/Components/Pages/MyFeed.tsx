@@ -39,7 +39,7 @@ export const MyFeed: React.FC<MyFeedProps> = ({ currentUser, userGroups }) => {
               ))
             )}
         </Grid>
-        {userGroups.length === 0 ? (
+        {userGroups.length === 0 && (
           <div style={{ marginTop: "30px" }}>
             <Typography
               gutterBottom
@@ -51,7 +51,7 @@ export const MyFeed: React.FC<MyFeedProps> = ({ currentUser, userGroups }) => {
               Join a group to view photos!
             </Typography>
           </div>
-        ) : null}
+        )}
       </Container>
     </main>
   );

@@ -17,6 +17,7 @@ import { LogIn } from "./Components/Pages/LogIn";
 import { Group } from "./Components/Pages/Group";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { MyFeed } from "./Components/Pages/MyFeed";
+import { ProtectedRoute } from "./ProtectedRoute";
 
 firebase.initializeApp({
   apiKey: "AIzaSyDvzOrnfzT_p9ntckvHxSJrO0AM6W9TEGY",
@@ -118,22 +119,37 @@ const App: React.FC = () => {
               <MyFeed currentUser={currentUser} userGroups={userGroups} />
             )}
           </Route>
-          <Route exact path="/all-groups">
+          <ProtectedRoute
+            exact
+            path="/all-groups"
+            currentUser={currentUser}
+            render={() => (
+              <AllGroups currentUser={currentUser} allGroups={allGroups} />
+            )}
+          />
+          {/* <Route exact path="/all-groups">
             {currentUser === "noUser" ? (
               <Redirect to="/" />
             ) : (
               <AllGroups currentUser={currentUser} allGroups={allGroups} />
             )}
-          </Route>
+          </Route> */}
           {allGroups.map((group) => {
             return (
-              <Route exact path={`/groups/${group.name}`} key={group.id}>
-                {currentUser === "noUser" ? (
-                  <Redirect to="/" />
-                ) : (
-                  <Group currentUser={currentUser} group={group} />
-                )}
-              </Route>
+              <ProtectedRoute
+                exact
+                path={`/groups/${group.name}`}
+                key={group.id}
+                currentUser={currentUser}
+                render={() => <Group currentUser={currentUser} group={group} />}
+              />
+              // <Route exact path={`/groups/${group.name}`} key={group.id}>
+              //   {currentUser === "noUser" ? (
+              //     <Redirect to="/" />
+              //   ) : (
+              //     <Group currentUser={currentUser} group={group} />
+              //   )}
+              // </Route>
             );
           })}
           <Route path="/">

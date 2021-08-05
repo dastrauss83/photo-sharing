@@ -157,7 +157,7 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
                 <Typography gutterBottom>Choose a Photo</Typography>
               </div>
             </div>
-            {currentUploadPath ? (
+            {currentUploadPath && (
               <>
                 <Typography gutterBottom>{currentUploadPath.name}</Typography>
                 <Button onClick={handleUpload}>
@@ -165,36 +165,35 @@ export const Group: React.FC<GroupProps> = ({ group, currentUser }) => {
                   <Typography>Upload</Typography>
                 </Button>
               </>
-            ) : null}
+            )}
           </CardContent>
         </Card>
       </Popover>
       <Container maxWidth="md">
         <Grid container spacing={4}>
-          {group.photos.length > 0
-            ? group.photos
-                .sort((a, b) => {
-                  return b.time - a.time;
-                })
-                .map((photo) => (
-                  <PhotoCard
-                    key={photo.photoUrl}
-                    photo={photo}
-                    currentUser={currentUser}
-                    group={group}
-                  />
-                ))
-            : null}
+          {group.photos.length > 0 &&
+            group.photos
+              .sort((a, b) => {
+                return b.time - a.time;
+              })
+              .map((photo) => (
+                <PhotoCard
+                  key={photo.photoUrl}
+                  photo={photo}
+                  currentUser={currentUser}
+                  group={group}
+                />
+              ))}
         </Grid>
         <div className={classes.members}>
           {group.members.filter((user) => {
             return user.uid === currentUser.uid;
-          }).length > 0 ? (
+          }).length > 0 && (
             <Button onClick={handleLeave}>
               <ExitToApp color="primary" style={{ marginRight: "5px" }} />
               <Typography>Leave</Typography>
             </Button>
-          ) : null}
+          )}
           <Typography>Group Members:</Typography>
           <div className={classes.membersList}>
             {group.members.map((user) => {
